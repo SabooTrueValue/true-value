@@ -1,6 +1,6 @@
 # Forms in website
 
-## popup
+## popup // Salman 1
   {
   phone : {String}
   date :{string}
@@ -25,7 +25,7 @@
  - On success - Return HTTP status 200 and returns the user document. The response should be a JSON object
  - On error - Return a suitable error message with a valid HTTP status code. The response should be a JSON object
 
-## enquiry form
+## enquiry form // Salman 2
 
 {
 name :{string},
@@ -57,7 +57,7 @@ updatedAt: {timestamp},
 -  On success - Return HTTP status 201. Also return the enquiry document. The response should be a JSON object
  - On error - Return a suitable error message with a valid HTTP status code. The response should be a JSON object
 
-- ## sell cars form
+- ## sell cars form // Salman 3
 
   {
   brandName :{string}
@@ -100,7 +100,7 @@ updatedAt: {timestamp},
 -  On success - Return HTTP status 201. Also return the sell document. The response should be a JSON object
  - On error - Return a suitable error message with a valid HTTP status code. The response should be a JSON object
 
-- ## apply loan form
+- ## apply loan form // Salman 4
 
 {
 name :{string},
@@ -130,7 +130,7 @@ updatedAt: {timestamp},
 -  On success - Return HTTP status 201. Also return the loan document. The response should be a JSON object
 -  On error - Return a suitable error message with a valid HTTP status code. The response should be a JSON object
 
-- ## contact us form
+- ## contact us form 
   {
   name :{string},
   phone :{string}
