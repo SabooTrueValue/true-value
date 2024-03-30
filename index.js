@@ -1,14 +1,19 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const route = require("./src/router/router");
-const dotenv = require('dotenv'); // Import dotenv
+const dotenv = require('dotenv');
+const cors = require("cors");
+const multer = require("multer");
+const fs = require('fs');
 
-dotenv.config(); // Load environment variables from .env file
-var cors = require("cors");
+dotenv.config();
+
 const app = express();
-//const multer= require("multer");
 
-//app.use( multer().any())
+// Configure multer to store files in memory as buffers
+const upload = multer({ storage: multer.memoryStorage() });
+
+app.use(upload.any());
 app.use(express.json());
 app.use(cors());
 
