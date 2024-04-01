@@ -9,23 +9,106 @@ let times = moment().format("HH:mm:ss");
 
 const vehicleSchema = new mongoose.Schema(
   {
-    location: { type: String },
-    satus: { type: String },
-    title: { type: String },
-    brand: { type: String },
-    overview: { type: String },
-    userType: { type: String },
-    category: { type: String },
-    transmission: { type: String },
-    bodyType: { type: String },
-    price: { type: String },
-    fuel: { type: String },
-    modelYear: { type: String },
-    engineCapcity: { type: String },
-    registeredCity: { type: String },
-    color: { type: String },
-    registeredNumber: { type: String },
-    kmDriven: { type: Number },
+    trueValueLocation: {
+        type: String,
+        required: true,
+    },
+    vehicleStatus: {
+        type: String,
+        required: true,
+    },
+    vehicleTitle: {
+        type: String,
+        required: true,
+    },
+    vehicleBrand: {
+        type: String,
+        required: true,
+    },
+    vehicleOverview: {
+        type: String,
+        required: true,
+        maxlength: [500, "Vehicle Overview must be at most 500 characters long"]
+    },
+    seatingCapacity: {
+        type: Number,
+        required: true,
+        min: [1, "Seating Capacity must be at least 1"],
+        max: [12, "Seating Capacity must be at most 12"]
+    },
+    userType: {
+        type: String,
+        required: true,
+    },
+    vehicleCategory: {
+        type: String,
+        required: true,
+    },
+    transmission: {
+        type: String,
+        required: true,
+    },
+    bodyType: {
+        type: String,
+        required: true,
+    },
+    price: {
+        type: Number,
+        required: true,
+        min: [0, "Price must be at least 0"],
+        max: [10000000, "Price must be at most 10000000"]
+    },
+    fuelType: {
+        type: String,
+        required: true,
+    },
+    modelYear: {
+        type: Number,
+        required: true,
+        min: [0, "Model Year must be at least 0"]
+    },
+    engineCapacity: {
+        type: String,
+        required: true,
+    },
+    registeredCity: {
+        type: String,
+        required: true,
+    },
+    color: {
+        type: String,
+        required: true,
+    },
+    registrationNo: {
+        type: String,
+        required: true,
+    },
+    kmDriven: {
+        type: Number,
+        required: true,
+        min: [0, "KM Driven must be at least 0"],
+        max: [100000, "KM Driven must be at most 100000"]
+    },
+    accessories :{
+        Sunroof: { type: Boolean, required: true },
+        LeatherSeats: { type: Boolean, required: true },
+        AlloyWheels: { type: Boolean, required: true },
+        FogLights: { type: Boolean, required: true },
+        Navigation: { type: Boolean, required: true },
+        Bluetooth: { type: Boolean, required: true },
+        ReverseCamera: { type: Boolean, required: true },
+        CruiseControl: { type: Boolean, required: true },
+        ParkingSensors: { type: Boolean, required: true },
+        AirConditioning: { type: Boolean, required: true },
+        ClimateControl: { type: Boolean, required: true },
+        PowerSteering: { type: Boolean, required: true },
+        PowerWindows: { type: Boolean, required: true },
+        PowerMirrors: { type: Boolean, required: true },
+        PowerSeats: { type: Boolean, required: true },
+        HeatedSeats: { type: Boolean, required: true },
+        CooledSeats: { type: Boolean, required: true },
+        MemorySeats: { type: Boolean, required: true }
+    },
     images: {
       image1: {
         fileId: { type: String },
