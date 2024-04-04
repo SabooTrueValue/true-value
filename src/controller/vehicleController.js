@@ -2,7 +2,7 @@ const vehicleModel = require("../model/vehicleModel");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 dotenv.config();
-
+const {isValidFiles,isValidBody,isValidObjectId, isValidimage} = require("../validation/validator")
 var ImageKit = require("imagekit");
 const { report, get } = require("../router/router");
 let imageKit = new ImageKit({
@@ -10,9 +10,9 @@ let imageKit = new ImageKit({
   privateKey: process.env.privateKey,
   urlEndpoint: process.env.urlEndpoint,
 });
-const isValidObjectId = (objectId) => {
-  return mongoose.Types.ObjectId.isValid(objectId);
-};
+// const isValidObjectId = (objectId) => {
+//   return mongoose.Types.ObjectId.isValid(objectId);
+// };
 // // Your existing code for handling file uploads...
 // dotenv.config();
 // console.log(process.env.publicKey);
@@ -23,16 +23,14 @@ const vehicle = async (req, res) => {
   try {
     let data = req.body;
     let files = req.files;
-
+    if (isValidBody(data)) {
+        return res.status(400).send({ status: false, message: "Enter details to create  vehicle" });
+    }
     //    console.log(files);
     //    console.log(imageKit);
-
-    if (!files || files.length === 0) {
-      return res
-        .status(400)
-        .send({ status: false, message: "No files were provided." });
+    if (!isValidFiles(files)) {
+        return res.status(400).send({ status: false, message: "Image is required" })
     }
-
     // Initialize images object if it doesn't exist
     data.images = data.images || {
       image1: {},
@@ -41,10 +39,12 @@ const vehicle = async (req, res) => {
       image4: {},
       image5: {},
       image6: {},
+      image7: {},
+      image8: {},
     };
 
     // Loop through each file and upload it to ImageKit
-    for (let i = 0; i < files.length && i < 6; i++) {
+    for (let i = 0; i < files.length && i < 9; i++) {
       if (!files[i].buffer) {
         console.log("Error: Missing 'buffer' property in file:", files[i]);
         return res.status(400).send({
@@ -56,7 +56,7 @@ const vehicle = async (req, res) => {
       const result = await imageKit.upload({
         file: files[i].buffer, // Use file buffer directly
         fileName: files[i].originalname, // Use original file name
-        folder: "/delete/",
+        folder: "/live_testing/",
       });
 
       // Store the url and fileId in the appropriate image object
@@ -447,7 +447,7 @@ const updatedateVehicle = async (req, res) => {
   }
 
   //   console.log(files);
-  if (files && files.length > 0) {
+  if (isValidFiles(files)) {
     data.images = getId.images;
 
     for (let i = 0; i < files.length && i < 6; i++) {
@@ -462,7 +462,7 @@ const updatedateVehicle = async (req, res) => {
       const result = await imageKit.upload({
         file: files[i].buffer, // Use file buffer directly
         fileName: files[i].originalname, // Use original file name
-        folder: "/update/",
+        folder: "/live_testing/",
       });
 
       let imageNumber = files[i].fieldname;
@@ -481,7 +481,7 @@ const updatedateVehicle = async (req, res) => {
       data.images[`image${imageNumber}`][`img${imageNumber}`] = result.url;
       data.images[`image${imageNumber}`].fileId = result.fileId;
     }
-
+  }
     let updatedVehicle = await vehicleModel.findByIdAndUpdate(
       { _id: Id },
       data,
@@ -494,7 +494,7 @@ const updatedateVehicle = async (req, res) => {
         message: "Product updated successfully",
         data: updatedVehicle,
       });
-  }
+  
 };
 
 module.exports = {

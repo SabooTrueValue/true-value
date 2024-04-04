@@ -47,9 +47,10 @@ let {
   updatedateVehicle,
 } = require("../controller/vehicleController");
 
+let {authentication,authorization} = require("../middleware/auth")
+
 router.post("/register", register);
 router.post("/login", login);
-
 router.post("/vehicle", vehicle);
 
 // Finance
@@ -87,9 +88,11 @@ router.get("/contactus/:id", contactusGetByIdApi);
 router.put("/contactus/:id", contactusUpdateApi);
 router.delete("/contactus/:id", contactusDeleteApi);
 
-router.post("/vehicle", vehicle);
-router.get("/allVehicles", allVehicles);
+router.post("/vehicle/:userId",authentication,authorization, vehicle);
+router.get("/allVehicles/:userId",authentication,authorization, allVehicles);
 router.get("/getcarsbyID/:carId", getcarsbyID);
-router.put("/updatedateVehicle/:carId", updatedateVehicle);
-router.delete("/deletecar/:carId", deletecar);
+router.put("/updatedateVehicle/:carId/:userId",authentication,authorization, updatedateVehicle);
+router.delete("/deletecar/:carId/:userId",authentication,authorization, deletecar);
+
+
 module.exports = router;
