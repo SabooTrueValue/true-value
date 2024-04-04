@@ -39,13 +39,18 @@ let {
   contactusDeleteApi,
 } = require("../controller/contactusController");
 
-let { vehicle } = require("../controller/vehicleController");
+let {
+  vehicle,
+  allVehicles,
+  getcarsbyID,
+  deletecar,
+  updatedateVehicle,
+} = require("../controller/vehicleController");
 
 router.post("/register", register);
 router.post("/login", login);
 
 router.post("/vehicle", vehicle);
-
 
 // Finance
 router.post("/finance", financePostApi);
@@ -82,4 +87,9 @@ router.get("/contactus/:id", contactusGetByIdApi);
 router.put("/contactus/:id", contactusUpdateApi);
 router.delete("/contactus/:id", contactusDeleteApi);
 
+router.post("/vehicle", vehicle);
+router.get("/allVehicles", allVehicles);
+router.get("/getcarsbyID/:carId", getcarsbyID);
+router.put("/updatedateVehicle/:carId", updatedateVehicle);
+router.delete("/deletecar/:carId", deletecar);
 module.exports = router;

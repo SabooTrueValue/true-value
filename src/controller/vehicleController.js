@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 dotenv.config();
 
 var ImageKit = require("imagekit");
-const { report } = require("../router/router");
+const { report, get } = require("../router/router");
 let imageKit = new ImageKit({
   publicKey: process.env.publicKey,
   privateKey: process.env.privateKey,
@@ -56,7 +56,7 @@ const vehicle = async (req, res) => {
       const result = await imageKit.upload({
         file: files[i].buffer, // Use file buffer directly
         fileName: files[i].originalname, // Use original file name
-        folder: "/testing/",
+        folder: "/delete/",
       });
 
       // Store the url and fileId in the appropriate image object
@@ -72,7 +72,7 @@ const vehicle = async (req, res) => {
     return res.status(500).send({ status: false, message: error.message });
   }
 };
-
+//===================================================================================
 const allVehicles = async (req, res) => {
   try {
     let data = req.query;
@@ -375,7 +375,7 @@ const getcarsbyID = async (req, res) => {
     return res.status(500).send({ status: false, message: error.message });
   }
 };
-
+//===================================================================================
 const deletecar = async (req, res) => {
   try {
     let id = req.params.carId;
@@ -397,6 +397,22 @@ const deletecar = async (req, res) => {
         message: "vehicle is already deleted not found",
       });
     }
+    const fileIds = Object.values(getId.images).map((image) => image.fileId);
+    // return res.status(200).send({ status: true, data:fileIds });
+    // console.log(fileIds)
+    // console.log(fileIds[0]);
+    for (let i = 0; i < fileIds.length; i++) {
+        if(fileIds[i]==undefined || fileIds==null){
+            continue;
+        }
+      let deleteImage = imageKit.deleteFile(
+       fileIds[i],
+        function (error, result) {
+          if (error) {return res.status(500).send({ status: false, message: error.message });}
+          else console.log(result);
+        }
+      );
+    }
 
     await vehicleModel.updateOne(
       { _id: id },
@@ -407,21 +423,84 @@ const deletecar = async (req, res) => {
     return res.status(500).send({ status: false, message: error.message });
   }
 };
-
+//====================================================================================
 const updatedateVehicle = async (req, res) => {
   let Id = req.params.carId;
+  let data = req.body;
+  let files = req.files;
+
   if (!isValidObjectId(Id)) {
     return res
       .status(400)
       .send({ status: false, message: "Please provide valid Product Id" });
   }
-  let getId = await vehicleModel.findById({_id :Id})
-  if(!getId){
-    return res.status(400)
-    .send({ status: false, message: "no vehicle is found" });
+  let getId = await vehicleModel.findById({ _id: Id });
+  if (!getId) {
+    return res
+      .status(400)
+      .send({ status: false, message: "no vehicle is found" });
   }
-  if (getId.isDeleted == true) { return res.status(404).send({ status: false, message: "vehicle is already deleted" }); }
-  let data = req.body;
-  let files = req.files;
+  if (getId.isDeleted == true) {
+    return res
+      .status(404)
+      .send({ status: false, message: "vehicle is already deleted" });
+  }
+
+  //   console.log(files);
+  if (files && files.length > 0) {
+    data.images = getId.images;
+
+    for (let i = 0; i < files.length && i < 6; i++) {
+      if (!files[i].buffer) {
+        console.log("Error: Missing 'buffer' property in file:", files[i]);
+        return res.status(400).send({
+          status: false,
+          message: "Missing 'buffer' property in file.",
+        });
+      }
+
+      const result = await imageKit.upload({
+        file: files[i].buffer, // Use file buffer directly
+        fileName: files[i].originalname, // Use original file name
+        folder: "/update/",
+      });
+
+      let imageNumber = files[i].fieldname;
+      //   console.log(imageNumber);
+      //   console.log(Object.keys(getId.images))
+      if (Object.keys(getId.images).length < imageNumber) {
+        return res
+          .status(400)
+          .send({
+            status: false,
+            message: `${imageNumber} this image is not present to update`,
+          });
+      }
+      // Store the url and fileId in the appropriate image object
+      // Assuming you want to store the first image in image1, second in image2, etc.
+      data.images[`image${imageNumber}`][`img${imageNumber}`] = result.url;
+      data.images[`image${imageNumber}`].fileId = result.fileId;
+    }
+
+    let updatedVehicle = await vehicleModel.findByIdAndUpdate(
+      { _id: Id },
+      data,
+      { new: true }
+    );
+    return res
+      .status(200)
+      .send({
+        status: true,
+        message: "Product updated successfully",
+        data: updatedVehicle,
+      });
+  }
 };
-module.exports = { vehicle, allVehicles, getcarsbyID, deletecar };
+
+module.exports = {
+  vehicle,
+  allVehicles,
+  getcarsbyID,
+  deletecar,
+  updatedateVehicle,
+};
