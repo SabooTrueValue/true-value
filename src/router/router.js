@@ -66,35 +66,40 @@ router.post("/vehicle", vehicle);
 
 // Finance
 router.post("/finance", financePostApi);
-router.get("/finance", authentication, authorization, financeGetApi);
+router.get("/finance/:userId", authentication, authorization, financeGetApi);
 router.get("/finance/:id", authentication, authorization, finanaceGetByIdApi);
 router.put("/finance/:id", authentication, authorization, financeUpdateApi);
 router.delete("/finance/:id", authentication, authorization, financeDeleteApi);
 
 // Buy Vehicle
 router.post("/buyVehicle", buyPostApi);
-router.get("/buyVehicle", authentication, authorization, buyGetApi);
+router.get("/buyVehicle/:userId", authentication, authorization, buyGetApi);
 router.get("/buyVehicle/:id", authentication, authorization, buyGetByIdApi);
 router.put("/buyVehicle/:id", authentication, authorization, buyUpdateApi);
 router.delete("/buyVehicle/:id", authentication, authorization, buyDeleteApi);
 
 // Sell Vehicle
 router.post("/sell", sellPostApi);
-router.get("/sell", authentication, authorization, sellGetApi);
+router.get("/sell/:userId", authentication, authorization, sellGetApi);
 router.get("/sell/:id", authentication, authorization, sellGetByIdApi);
 router.put("/sell/:id", authentication, authorization, sellUpdateApi);
 router.delete("/sell/:id", authentication, authorization, sellDeleteApi);
 
 // Popup
 router.post("/popup", popupPostApi);
-router.get("/popup", authentication, authorization, popupGetApi);
+router.get("/popup/:userId", authentication, authorization, popupGetApi);
 router.get("/popup/:id", authentication, authorization, popupGetByIdApi);
 router.put("/popup/:id", authentication, authorization, popupUpdateApi);
 router.delete("/popup/:id", authentication, authorization, popupDeleteApi);
 
 // Contact Us
 router.post("/contactus", contactusPostApi);
-router.get("/contactus", authentication, authorization, contactusGetApi);
+router.get(
+  "/contactus/:userId",
+  authentication,
+  authorization,
+  contactusGetApi
+);
 router.get(
   "/contactus/:id",
   authentication,
@@ -111,7 +116,12 @@ router.delete(
 
 // Home Query
 router.post("/homequery", homequeryPostApi);
-router.get("/homequery", authentication, authorization, homequeryGetApi);
+router.get(
+  "/homequery/:userId",
+  authentication,
+  authorization,
+  homequeryGetApi
+);
 router.get(
   "/homequery/:id",
   authentication,
