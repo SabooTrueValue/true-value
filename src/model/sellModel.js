@@ -17,6 +17,7 @@ const SellSchema = new mongoose.Schema(
       type: String,
       require: true,
       trim: true,
+      
     },
     mobile: {
       type: String,
