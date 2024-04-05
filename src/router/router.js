@@ -49,6 +49,11 @@ let {
 
 let {authentication,authorization} = require("../middleware/auth")
 
+
+
+router.get("/test-me", function (req, res) {
+  res.send("this is successfully created");
+});
 router.post("/register", register);
 router.post("/login", login);
 router.post("/vehicle", vehicle);
