@@ -17,6 +17,7 @@ const FinanceSchema = new mongoose.Schema(
       type: String,
       require: true,
       trim: true,
+      
     },
     phone: {
       type: String,
