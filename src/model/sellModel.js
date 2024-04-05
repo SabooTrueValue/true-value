@@ -16,7 +16,6 @@ const SellSchema = new mongoose.Schema(
     email: {
       type: String,
       require: true,
-      unique: true,
       trim: true,
     },
     mobile: {
@@ -29,11 +28,7 @@ const SellSchema = new mongoose.Schema(
       require: true,
       trim: true,
     },
-    makeOfYear: {
-      type: String,
-      require: true,
-      trim: true,
-    },
+   
     carModel: {
       type: String,
       require: true,
@@ -59,16 +54,7 @@ const SellSchema = new mongoose.Schema(
       require: true,
       trim: true,
     },
-    registeredCity: {
-      type: String,
-      require: true,
-      trim: true,
-    },
-    transmission: {
-      type: String,
-      require: true,
-      trim: true,
-    },
+   
     deletedAt: {
       type: Date,
     },

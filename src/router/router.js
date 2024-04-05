@@ -47,6 +47,14 @@ let {
   updatedateVehicle,
 } = require("../controller/vehicleController");
 
+let {
+  homequeryPostApi,
+  homequeryGetApi,
+  homequeryGetByIdApi,
+  homequeryUpdateApi,
+  homequeryDeleteApi,
+} = require("../controller/homequeryController");
+
 let {authentication,authorization} = require("../middleware/auth")
 
 
@@ -92,6 +100,25 @@ router.get("/contactus", contactusGetApi);
 router.get("/contactus/:id", contactusGetByIdApi);
 router.put("/contactus/:id", contactusUpdateApi);
 router.delete("/contactus/:id", contactusDeleteApi);
+
+// Home Query
+router.post("/homequery", homequeryPostApi);
+router.get("/homequery", authentication, authorization, homequeryGetApi);
+router.get(
+  "/homequery/:id",
+  authentication,
+  authorization,
+  homequeryGetByIdApi
+);
+router.put("/homequery/:id", authentication, authorization, homequeryUpdateApi);
+router.delete(
+  "/homequery/:id",
+  authentication,
+  authorization,
+  homequeryDeleteApi
+);
+
+// Vehicle
 
 router.post("/vehicle/:userId",authentication,authorization, vehicle);
 router.get("/allVehicles/:userId",authentication,authorization, allVehicles);

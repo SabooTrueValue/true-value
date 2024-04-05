@@ -6,7 +6,7 @@ moment.tz.setDefault("Asia/Kolkata");
 let dates = moment().format("YYYY-MM-DD");
 let times = moment().format("HH:mm:ss");
 
-const FinanceSchema = new mongoose.Schema(
+const HomequerySchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -23,7 +23,7 @@ const FinanceSchema = new mongoose.Schema(
       require: true,
       trim: true,
     },
-    loanAmount: {
+    type: {
       type: String,
       require: true,
       trim: true,
@@ -47,4 +47,4 @@ const FinanceSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("Finance", FinanceSchema);
+module.exports = mongoose.model("Homequery", HomequerySchema);

@@ -16,7 +16,6 @@ const BuyVehicleSchema = new mongoose.Schema(
     email: {
       type: String,
       require: true,
-      unique: true,
       trim: true,
     },
     phone: {
