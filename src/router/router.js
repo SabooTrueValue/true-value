@@ -55,9 +55,7 @@ let {
   homequeryDeleteApi,
 } = require("../controller/homequeryController");
 
-let {authentication,authorization} = require("../middleware/auth")
-
-
+let { authentication, authorization } = require("../middleware/auth");
 
 router.get("/test-me", function (req, res) {
   res.send("this is successfully created");
@@ -68,38 +66,48 @@ router.post("/vehicle", vehicle);
 
 // Finance
 router.post("/finance", financePostApi);
-router.get("/finance", financeGetApi);
-router.get("/finance/:id", finanaceGetByIdApi);
-router.put("/finance/:id", financeUpdateApi);
-router.delete("/finance/:id", financeDeleteApi);
+router.get("/finance", authentication, authorization, financeGetApi);
+router.get("/finance/:id", authentication, authorization, finanaceGetByIdApi);
+router.put("/finance/:id", authentication, authorization, financeUpdateApi);
+router.delete("/finance/:id", authentication, authorization, financeDeleteApi);
 
 // Buy Vehicle
 router.post("/buyVehicle", buyPostApi);
-router.get("/buyVehicle", buyGetApi);
-router.get("/buyVehicle/:id", buyGetByIdApi);
-router.put("/buyVehicle/:id", buyUpdateApi);
-router.delete("/buyVehicle/:id", buyDeleteApi);
+router.get("/buyVehicle", authentication, authorization, buyGetApi);
+router.get("/buyVehicle/:id", authentication, authorization, buyGetByIdApi);
+router.put("/buyVehicle/:id", authentication, authorization, buyUpdateApi);
+router.delete("/buyVehicle/:id", authentication, authorization, buyDeleteApi);
 
 // Sell Vehicle
 router.post("/sell", sellPostApi);
-router.get("/sell", sellGetApi);
-router.get("/sell/:id", sellGetByIdApi);
-router.put("/sell/:id", sellUpdateApi);
-router.delete("/sell/:id", sellDeleteApi);
+router.get("/sell", authentication, authorization, sellGetApi);
+router.get("/sell/:id", authentication, authorization, sellGetByIdApi);
+router.put("/sell/:id", authentication, authorization, sellUpdateApi);
+router.delete("/sell/:id", authentication, authorization, sellDeleteApi);
 
 // Popup
 router.post("/popup", popupPostApi);
-router.get("/popup", popupGetApi);
-router.get("/popup/:id", popupGetByIdApi);
-router.put("/popup/:id", popupUpdateApi);
-router.delete("/popup/:id", popupDeleteApi);
+router.get("/popup", authentication, authorization, popupGetApi);
+router.get("/popup/:id", authentication, authorization, popupGetByIdApi);
+router.put("/popup/:id", authentication, authorization, popupUpdateApi);
+router.delete("/popup/:id", authentication, authorization, popupDeleteApi);
 
 // Contact Us
 router.post("/contactus", contactusPostApi);
-router.get("/contactus", contactusGetApi);
-router.get("/contactus/:id", contactusGetByIdApi);
-router.put("/contactus/:id", contactusUpdateApi);
-router.delete("/contactus/:id", contactusDeleteApi);
+router.get("/contactus", authentication, authorization, contactusGetApi);
+router.get(
+  "/contactus/:id",
+  authentication,
+  authorization,
+  contactusGetByIdApi
+);
+router.put("/contactus/:id", authentication, authorization, contactusUpdateApi);
+router.delete(
+  "/contactus/:id",
+  authentication,
+  authorization,
+  contactusDeleteApi
+);
 
 // Home Query
 router.post("/homequery", homequeryPostApi);
@@ -107,6 +115,8 @@ router.get("/homequery", authentication, authorization, homequeryGetApi);
 router.get(
   "/homequery/:id",
   authentication,
+  authentication,
+  authorization,
   authorization,
   homequeryGetByIdApi
 );
@@ -120,11 +130,20 @@ router.delete(
 
 // Vehicle
 
-router.post("/vehicle/:userId",authentication,authorization, vehicle);
-router.get("/allVehicles/:userId",authentication,authorization, allVehicles);
+router.post("/vehicle/:userId", authentication, authorization, vehicle);
+router.get("/allVehicles/:userId", authentication, authorization, allVehicles);
 router.get("/getcarsbyID/:carId", getcarsbyID);
-router.put("/updatedateVehicle/:carId/:userId",authentication,authorization, updatedateVehicle);
-router.delete("/deletecar/:carId/:userId",authentication,authorization, deletecar);
-
+router.put(
+  "/updatedateVehicle/:carId/:userId",
+  authentication,
+  authorization,
+  updatedateVehicle
+);
+router.delete(
+  "/deletecar/:carId/:userId",
+  authentication,
+  authorization,
+  deletecar
+);
 
 module.exports = router;
