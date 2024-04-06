@@ -1,50 +1,49 @@
 const vehicleModel = require("../model/vehicleModel");
 const dotenv = require("dotenv");
-const mongoose = require("mongoose");
 dotenv.config();
-const {isValidFiles,isValidBody,isValidObjectId, isValidimage} = require("../validation/validator")
+const {
+  isValidFiles,
+  isValidBody,
+  isValidObjectId,
+  isValidimage,
+} = require("../validation/validator");
 var ImageKit = require("imagekit");
-const { report, get } = require("../router/router");
+// const { report, get } = require("../router/router");
 let imageKit = new ImageKit({
   publicKey: process.env.publicKey,
   privateKey: process.env.privateKey,
   urlEndpoint: process.env.urlEndpoint,
 });
-// const isValidObjectId = (objectId) => {
-//   return mongoose.Types.ObjectId.isValid(objectId);
-// };
-// // Your existing code for handling file uploads...
-// dotenv.config();
-// console.log(process.env.publicKey);
-// console.log(process.env.privateKey);
-// console.log(process.env.urlEndpoint);
-
+ 
+//===================================================================================
 const vehicle = async (req, res) => {
   try {
     let data = req.body;
     let files = req.files;
     if (isValidBody(data)) {
-        return res.status(400).send({ status: false, message: "Enter details to create  vehicle" });
+      return res
+        .status(400)
+        .send({ status: false, message: "Enter details to create  vehicle" });
     }
     //    console.log(files);
     //    console.log(imageKit);
     if (!isValidFiles(files)) {
-        return res.status(400).send({ status: false, message: "Image is required" })
+      return res
+        .status(400)
+        .send({ status: false, message: "Image is required" });
     }
     // Initialize images object if it doesn't exist
     data.images = data.images || {
       image1: {},
       image2: {},
       image3: {},
-      image4: {},
+      image4: {}, 
       image5: {},
       image6: {},
-      image7: {},
-      image8: {},
     };
 
     // Loop through each file and upload it to ImageKit
-    for (let i = 0; i < files.length && i < 9; i++) {
+    for (let i = 0; i < files.length && i < 7; i++) {
       if (!files[i].buffer) {
         console.log("Error: Missing 'buffer' property in file:", files[i]);
         return res.status(400).send({
@@ -61,17 +60,25 @@ const vehicle = async (req, res) => {
 
       // Store the url and fileId in the appropriate image object
       // Assuming you want to store the first image in image1, second in image2, etc.
+     
       data.images[`image${i + 1}`][`img${i + 1}`] = result.url;
       data.images[`image${i + 1}`].fileId = result.fileId;
     }
 
     let saveData = await vehicleModel.create(data);
-    return res.status(201).send({ status: true, data: saveData });
+    return res
+      .status(201)
+      .send({
+        status: true,
+        data: saveData,
+        message: "vehicle created successfully",
+      });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).send({ status: false, message: error.message });
   }
 };
+
 //===================================================================================
 const allVehicles = async (req, res) => {
   try {
@@ -199,7 +206,7 @@ const allVehicles = async (req, res) => {
       let enumTransmission = ["Automatic", "Manual"];
       let transmissions = data.transmission.split(",");
       for (let i = 0; i < transmissions.length; i++) {
-        if (!enumTransmission.includes(transmissions[i])) {
+        if (!enumTransmission.includes(transmissions[i])) { 
           return res.status(400).send({
             status: false,
             message: `transmission should be ${enumTransmission} value (with multiple value please give saperated by comma)`,
@@ -402,14 +409,17 @@ const deletecar = async (req, res) => {
     // console.log(fileIds)
     // console.log(fileIds[0]);
     for (let i = 0; i < fileIds.length; i++) {
-        if(fileIds[i]==undefined || fileIds==null){
-            continue;
-        }
+      if (fileIds[i] == undefined || fileIds == null) {
+        continue;
+      }
       let deleteImage = imageKit.deleteFile(
-       fileIds[i],
+        fileIds[i],
         function (error, result) {
-          if (error) {return res.status(500).send({ status: false, message: error.message });}
-          else console.log(result);
+          if (error) {
+            return res
+              .status(500)
+              .send({ status: false, message: error.message });
+          } else console.log(result);
         }
       );
     }
@@ -469,12 +479,10 @@ const updatedateVehicle = async (req, res) => {
       //   console.log(imageNumber);
       //   console.log(Object.keys(getId.images))
       if (Object.keys(getId.images).length < imageNumber) {
-        return res
-          .status(400)
-          .send({
-            status: false,
-            message: `${imageNumber} this image is not present to update`,
-          });
+        return res.status(400).send({
+          status: false,
+          message: `${imageNumber} this image is not present to update`,
+        });
       }
       // Store the url and fileId in the appropriate image object
       // Assuming you want to store the first image in image1, second in image2, etc.
@@ -482,19 +490,14 @@ const updatedateVehicle = async (req, res) => {
       data.images[`image${imageNumber}`].fileId = result.fileId;
     }
   }
-    let updatedVehicle = await vehicleModel.findByIdAndUpdate(
-      { _id: Id },
-      data,
-      { new: true }
-    );
-    return res
-      .status(200)
-      .send({
-        status: true,
-        message: "Product updated successfully",
-        data: updatedVehicle,
-      });
-  
+  let updatedVehicle = await vehicleModel.findByIdAndUpdate({ _id: Id }, data, {
+    new: true,
+  });
+  return res.status(200).send({
+    status: true,
+    message: "Product updated successfully",
+    data: updatedVehicle,
+  });
 };
 
 module.exports = {
