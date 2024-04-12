@@ -12,7 +12,7 @@ const allApiData = async (req, res) => {
     try{
         const soldVehicleData = await vehicleModel.find({vehicleStatus: "Sold"}).count();
         const availableVehicleData = await vehicleModel.find({vehicleStatus: "Available"}).count();
-        const buyVehicleData = await buyVehicleModel.find().count();
+        const totalVehicle = await vehicleModel.find().count();
 
         const financeData = await financeModel.find().count();
         const homequeryData = await homequeryModel.find().count();
@@ -21,7 +21,7 @@ const allApiData = async (req, res) => {
         // const userData = await userModel.find().count();
         const vehicleData = await vehicleModel.find().count();
         const contactusData = await contactusModel.find().count();
-         res.status(200).send({soldVehicleData, availableVehicleData, financeData, homequeryData, popupData, sellData, userData, vehicleData, contactusData, buyVehicleData});
+         res.status(200).send({soldVehicleData, availableVehicleData, financeData, homequeryData, popupData, sellData, userData, vehicleData, contactusData, totalVehicle});
     }
     catch (error) {
         console.log(error);
