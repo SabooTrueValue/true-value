@@ -21,10 +21,13 @@ const allApiData = async (req, res) => {
         // const userData = await userModel.find().count();
         const vehicleData = await vehicleModel.find().count();
         const contactusData = await contactusModel.find().count();
-         res.status(200).send({soldVehicleData, availableVehicleData, financeData, homequeryData, popupData, sellData, userData, vehicleData, contactusData, totalVehicle});
+         res.status(200).send({soldVehicleData, availableVehicleData, financeData, homequeryData, popupData, sellData, vehicleData, contactusData, totalVehicle});
     }
     catch (error) {
         console.log(error);
+          return res
+            .status(500)
+            .send({ status: false, message: error.message });
     }
 }
 
