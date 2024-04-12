@@ -87,7 +87,7 @@ const vehicleSchema = new mongoose.Schema(
         type: Number,
         required: true,
         min: [0, "KM Driven must be at least 0"],
-        max: [500000, "KM Driven must be at most 100000"]
+        max: [500000, "KM Driven must be at most 500000"]
     },
     accessories :{
         Sunroof: { type: Boolean, required: true },

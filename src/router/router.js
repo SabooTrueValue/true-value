@@ -57,6 +57,9 @@ let {
 
 let { authentication, authorization } = require("../middleware/auth");
 
+let { allApiData} = require("../controller/allApiData");
+
+
 router.get("/test-me", function (req, res) {
   res.send("this is successfully created");
 });
@@ -156,5 +159,8 @@ router.delete(
   authorization,
   deletecar
 );
+
+
+router.get("/allapiData", allApiData);
 
 module.exports = router;
