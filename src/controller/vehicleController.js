@@ -14,7 +14,7 @@ let imageKit = new ImageKit({
   privateKey: process.env.privateKey,
   urlEndpoint: process.env.urlEndpoint,
 });
- 
+
 //===================================================================================
 const vehicle = async (req, res) => {
   try {
@@ -37,7 +37,7 @@ const vehicle = async (req, res) => {
       image1: {},
       image2: {},
       image3: {},
-      image4: {}, 
+      image4: {},
       image5: {},
       image6: {},
     };
@@ -60,19 +60,17 @@ const vehicle = async (req, res) => {
 
       // Store the url and fileId in the appropriate image object
       // Assuming you want to store the first image in image1, second in image2, etc.
-     
+
       data.images[`image${i + 1}`][`img${i + 1}`] = result.url;
       data.images[`image${i + 1}`].fileId = result.fileId;
     }
 
     let saveData = await vehicleModel.create(data);
-    return res
-      .status(201)
-      .send({
-        status: true,
-        data: saveData,
-        message: "vehicle created successfully",
-      });
+    return res.status(201).send({
+      status: true,
+      data: saveData,
+      message: "vehicle created successfully",
+    });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).send({ status: false, message: error.message });
@@ -206,7 +204,7 @@ const allVehicles = async (req, res) => {
       let enumTransmission = ["Automatic", "Manual"];
       let transmissions = data.transmission.split(",");
       for (let i = 0; i < transmissions.length; i++) {
-        if (!enumTransmission.includes(transmissions[i])) { 
+        if (!enumTransmission.includes(transmissions[i])) {
           return res.status(400).send({
             status: false,
             message: `transmission should be ${enumTransmission} value (with multiple value please give saperated by comma)`,
@@ -382,6 +380,27 @@ const getcarsbyID = async (req, res) => {
     return res.status(500).send({ status: false, message: error.message });
   }
 };
+
+const getAvailableVehicle = async (req, res) => {
+
+  try {
+    let vehicleDetails = await vehicleModel.find({
+      isDeleted: false,
+      vehicleStatus: "Available",
+    });
+
+    if (!vehicleDetails) {
+      return res
+        .status(404)
+        .send({ status: false, message: "no vehicle found" });
+    }
+    return res
+      .status(200)
+      .send({ status: true, message: "Success", data: vehicleDetails });
+  } catch (error) {
+    return res.status(500).send({ status: false, message: error.message });
+  }
+};
 //===================================================================================
 const deletecar = async (req, res) => {
   try {
@@ -506,4 +525,5 @@ module.exports = {
   getcarsbyID,
   deletecar,
   updatedateVehicle,
+  getAvailableVehicle,
 };

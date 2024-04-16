@@ -45,6 +45,7 @@ let {
   getcarsbyID,
   deletecar,
   updatedateVehicle,
+  getAvailableVehicle,
 } = require("../controller/vehicleController");
 
 let {
@@ -57,8 +58,7 @@ let {
 
 let { authentication, authorization } = require("../middleware/auth");
 
-let { allApiData} = require("../controller/allApiData");
-
+let { allApiData } = require("../controller/allApiData");
 
 router.get("/test-me", function (req, res) {
   res.send("this is successfully created");
@@ -146,6 +146,7 @@ router.delete(
 router.post("/vehicle/:userId", authentication, authorization, vehicle);
 router.get("/allVehicles/:userId", authentication, authorization, allVehicles);
 router.get("/allVehicles/", allVehicles);
+router.get("/allavailableVehicles/", getAvailableVehicle);
 router.get("/getcarsbyID/:carId", getcarsbyID);
 router.put(
   "/updatedateVehicle/:carId/:userId",
@@ -159,7 +160,6 @@ router.delete(
   authorization,
   deletecar
 );
-
 
 router.get("/allapiData", allApiData);
 
