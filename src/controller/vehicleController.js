@@ -17,7 +17,6 @@ let imageKit = new ImageKit({
   urlEndpoint: process.env.urlEndpoint,
 });
 
-
 //===================================================================================
 const vehicle = async (req, res) => {
   try {
@@ -68,11 +67,11 @@ const vehicle = async (req, res) => {
       data.images[`image${i + 1}`].fileId = result.fileId;
     }
 
-   moment.tz.setDefault("Asia/Kolkata");
-   let dates = moment().format("YYYY-MM-DD");
-   let times = moment().format("HH:mm:ss");
-   data.date = dates;
-   data.time = times;
+    moment.tz.setDefault("Asia/Kolkata");
+    let dates = moment().format("YYYY-MM-DD");
+    let times = moment().format("HH:mm:ss");
+    data.date = dates;
+    data.time = times;
 
     let saveData = await vehicleModel.create(data);
     return res.status(201).send({
@@ -356,7 +355,7 @@ const allVehicles = async (req, res) => {
       }
     }
 
-    let findVechiles = await vehicleModel.find(filter).sort({ date: -1 });
+    let findVechiles = await vehicleModel.find(filter).sort({ createdAt: -1 });
     return res.status(200).send({ status: true, data: findVechiles });
   } catch (error) {
     return res.status(500).send({ status: false, message: error.message });
@@ -391,7 +390,6 @@ const getcarsbyID = async (req, res) => {
 };
 
 const getAvailableVehicle = async (req, res) => {
-
   try {
     let vehicleDetails = await vehicleModel.find({
       isDeleted: false,
