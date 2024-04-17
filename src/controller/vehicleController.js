@@ -7,6 +7,8 @@ const {
   isValidObjectId,
   isValidimage,
 } = require("../validation/validator");
+const moment = require("moment");
+require("moment-timezone");
 var ImageKit = require("imagekit");
 // const { report, get } = require("../router/router");
 let imageKit = new ImageKit({
@@ -14,6 +16,7 @@ let imageKit = new ImageKit({
   privateKey: process.env.privateKey,
   urlEndpoint: process.env.urlEndpoint,
 });
+
 
 //===================================================================================
 const vehicle = async (req, res) => {
@@ -64,6 +67,12 @@ const vehicle = async (req, res) => {
       data.images[`image${i + 1}`][`img${i + 1}`] = result.url;
       data.images[`image${i + 1}`].fileId = result.fileId;
     }
+
+   moment.tz.setDefault("Asia/Kolkata");
+   let dates = moment().format("YYYY-MM-DD");
+   let times = moment().format("HH:mm:ss");
+   data.date = dates;
+   data.time = times;
 
     let saveData = await vehicleModel.create(data);
     return res.status(201).send({

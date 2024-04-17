@@ -1,9 +1,16 @@
 const buyModel = require("../model/buyVehicleModel");
+const moment = require("moment");
+require("moment-timezone");
 
 const buyPostApi = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   try {
     let data = req.body;
+    moment.tz.setDefault("Asia/Kolkata");
+    let dates = moment().format("YYYY-MM-DD");
+    let times = moment().format("HH:mm:ss");
+    data.date = dates;
+    data.time = times;
     let saveData = await buyModel.create(data);
     res.status(201).send({ status: true, data: saveData });
   } catch (error) {
