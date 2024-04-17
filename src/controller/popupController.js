@@ -5,6 +5,7 @@ const popupPostApi = async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     try {
         let data = req.body;
+        
         let saveData = await popupModel.create(data);
         res.status(201).send({ status: true, data: saveData });
     } catch (error) {
