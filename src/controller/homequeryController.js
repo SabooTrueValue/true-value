@@ -21,7 +21,7 @@ const homequeryPostApi = async (req, res) => {
 const homequeryGetApi = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   try {
-    let data = await homequerModel.find({ isDeleted: false });
+    let data = await homequerModel.find({ isDeleted: false }).sort({ date: -1 });
     res.status(200).send({ status: true, data: data });
   } catch (error) {
     return res.status(500).send({ status: false, message: error.message });

@@ -356,7 +356,7 @@ const allVehicles = async (req, res) => {
       }
     }
 
-    let findVechiles = await vehicleModel.find(filter);
+    let findVechiles = await vehicleModel.find(filter).sort({ date: -1 });
     return res.status(200).send({ status: true, data: findVechiles });
   } catch (error) {
     return res.status(500).send({ status: false, message: error.message });
