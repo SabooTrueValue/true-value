@@ -142,7 +142,6 @@ router.delete(
 );
 
 // Vehicle
-
 router.post("/vehicle/:userId", authentication, authorization, vehicle);
 router.get("/allVehicles/:userId", authentication, authorization, allVehicles);
 router.get("/allVehicles/", allVehicles);
